@@ -411,14 +411,18 @@ function About() {
   );
 }
 
-function PersonCard({ role, p, lead }) {
-  const T = useContext(Tone);
+function MemberRow({ role, p, lead }) {
   return (
-    <motion.article variants={item} whileHover={{ y: -8 }} className={`overflow-hidden rounded-2xl border ${T.card}`}>
-      <Duo src={p.img} alt={p.n} className="aspect-[4/5] w-full" />
-      <div className="p-4">
-        <p className="font-medium">{p.n}</p>
-        <p className={`text-sm ${lead ? T.accent : T.faint}`}>{role}</p>
+    <motion.article variants={item} whileHover={{ x: 4 }}
+      className={`flex items-center gap-3 rounded-2xl border p-3 transition-colors ${lead ? "border-[#38BDF8] bg-[#38BDF8]/10" : "border-white/20 bg-white/5 hover:border-white/50"}`}>
+      <Duo src={p.img} alt={p.n} className={`shrink-0 rounded-xl ${lead ? "h-14 w-14" : "h-11 w-11"}`} />
+      <div className="min-w-0 flex-1">
+        <p className="truncate font-medium">{p.n}</p>
+        <p className={`text-sm ${lead ? "text-[#38BDF8]" : "text-white/55"}`}>{role}</p>
+      </div>
+      <div className="flex shrink-0 gap-2.5 text-white/55">
+        <a href="#" aria-label={`Instagram ${p.n}`} className="transition-colors hover:text-[#38BDF8]"><Instagram size={16} /></a>
+        <a href="#" aria-label={`LinkedIn ${p.n}`} className="transition-colors hover:text-[#38BDF8]"><Linkedin size={16} /></a>
       </div>
     </motion.article>
   );
@@ -443,18 +447,26 @@ function Divisions() {
         ))}
       </div>
       <AnimatePresence mode="wait">
-        <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.35 }} className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.5fr]">
+        <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.35 }} className="mt-10 grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div>
-            <div className="h-56 overflow-hidden rounded-2xl border border-white/25"><Duo src={D.img} alt={D.full} className="h-full w-full" /></div>
-            <h3 className={`${disp} mt-6 text-3xl`}>{D.full}</h3>
+            <div className="aspect-[16/9] overflow-hidden rounded-2xl border border-white/25"><Duo src={D.img} alt={D.full} className="h-full w-full" /></div>
+            <h3 className={`${disp} mt-6 text-2xl sm:text-3xl`}>{D.full}</h3>
             <p className="mt-3 text-white/75">{D.desc}</p>
-            <ul className="mt-6 space-y-3 border-t border-white/25 pt-5">
-              {D.tasks.map((t) => <li key={t} className="flex gap-3"><Check size={18} className="mt-1 shrink-0 text-[#38BDF8]" />{t}</li>)}
-            </ul>
           </div>
-          <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-            {D.members.map(([role, p], k) => <PersonCard key={k} role={role} p={p} lead={k === 0} />)}
-          </motion.div>
+          <div className="space-y-8">
+            <div>
+              <h4 className="text-sm text-white/55">Tugas utama</h4>
+              <ul className="mt-3 divide-y divide-white/15 border-y border-white/15">
+                {D.tasks.map((t) => <li key={t} className="flex gap-3 py-3"><Check size={18} className="mt-0.5 shrink-0 text-[#38BDF8]" />{t}</li>)}
+              </ul>
+            </div>
+            <div>
+              <div className="flex items-baseline justify-between"><h4 className="text-sm text-white/55">Anggota</h4><span className="text-sm text-white/55">{D.members.length} orang</span></div>
+              <motion.div variants={stagger} initial="hidden" animate="show" className="mt-3 grid gap-3">
+                {D.members.map(([role, p], k) => <MemberRow key={k} role={role} p={p} lead={k === 0} />)}
+              </motion.div>
+            </div>
+          </div>
         </motion.div>
       </AnimatePresence>
     </Section>
