@@ -22,3 +22,11 @@ npm run preview  # coba hasil build
 - Foto anggota: ubah array `MEN` dan `WOMEN` serta fungsi `person()`.
 - Nama dan jabatan: ubah `DIVISIONS` dan `BPH`.
 - Palet: hitam `#04060B`, biru tua `#0A192F`, biru muda `#38BDF8`, putih. Ganti lewat find and replace.
+
+## Deploy ke GitHub Pages
+
+1. Push ke branch `main`.
+2. Di repo GitHub: Settings, Pages, Build and deployment, Source: **GitHub Actions**.
+3. Setiap push ke `main` akan membangun dan menerbitkan situs secara otomatis lewat `.github/workflows/deploy.yml`.
+
+Situs akan tersedia di `https://USERNAME.github.io/NAMA-REPO/`.
