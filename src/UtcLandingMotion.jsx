@@ -483,10 +483,18 @@ function Events() {
         <AnimatePresence mode="popLayout" initial={false}>
           {list.map((e) => (
             <motion.li layout key={e.title} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.3 }}
-              className={`group flex items-center gap-5 border-b ${T.line} py-5 transition-colors ${T.row}`}>
-              <div className="w-20 shrink-0"><span className={`${disp} text-5xl ${e.up ? "" : "opacity-40"}`}>{e.d}</span><span className="ml-1 text-sm opacity-60">{e.m}</span></div>
-              <div className="min-w-0 flex-1"><h3 className="text-lg sm:text-xl">{e.title}</h3><p className="text-sm opacity-60">{e.type}</p></div>
-              <span className={`hidden rounded-full border px-4 py-1 text-sm md:block ${e.up ? "border-[#0A192F] bg-[#0A192F] text-white" : "border-[#0A192F]/30 opacity-60"}`}>{e.up ? "Mendatang" : "Selesai"}</span>
+              className={`group flex items-center gap-4 border-b ${T.line} py-5 transition-colors sm:gap-6 ${T.row}`}>
+              <div className={`w-[4.5rem] shrink-0 border-r ${T.line} pr-4 sm:w-28 sm:pr-6 ${e.up ? "" : "opacity-60"}`}>
+                <span className={`${disp} block text-3xl leading-none sm:text-4xl`}>{e.d}</span>
+                <span className="mt-1.5 block text-xs sm:text-sm">{e.m} 2026</span>
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-lg leading-snug sm:text-xl">{e.title}</h3>
+                <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
+                  <span className="opacity-60">{e.type}</span>
+                  <span className={`rounded-full border px-3 py-0.5 text-xs ${e.up ? "border-[#0A192F] bg-[#0A192F] text-white" : "border-[#0A192F]/40 opacity-70"}`}>{e.up ? "Mendatang" : "Selesai"}</span>
+                </p>
+              </div>
               <div className="hidden h-16 w-28 shrink-0 overflow-hidden rounded-lg sm:block"><Duo src={e.img} alt={e.title} className="h-full w-full" /></div>
             </motion.li>
           ))}
