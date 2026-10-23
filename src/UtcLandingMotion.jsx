@@ -6,6 +6,7 @@ import {
   Menu, X, Mail, MapPin, Plus, Minus, ArrowUpRight, Trophy, Check,
   Megaphone, Wrench, Clapperboard, Users,
 } from "lucide-react";
+import logo from "./assets/utc-logo.png";
 
 /* Ikon merek dibuat sendiri karena lucide-react versi baru sudah tidak menyediakannya */
 const brand = (paths) => ({ size = 24, className = "" }) => (
@@ -122,10 +123,8 @@ const Asterisk = ({ size = 90, className = "" }) => (
     {[0, 45, 90, 135].map((a) => <line key={a} x1="50" y1="4" x2="50" y2="96" transform={`rotate(${a} 50 50)`} />)}
   </svg>
 );
-const Mark = () => (
-  <svg width="34" height="22" viewBox="0 0 34 22" fill="currentColor" aria-hidden>
-    {[0, 6, 12, 18].map((y, i) => <rect key={y} x={i % 2 ? 4 : 0} y={y} width="30" height="3" />)}
-  </svg>
+const Logo = ({ size = 36, className = "" }) => (
+  <img src={logo} alt="" width={size} height={size} style={{ width: size, height: size }} className={`shrink-0 rounded-full ${className}`} />
 );
 
 function Reveal({ children, delay = 0, y = 28, className = "" }) {
@@ -206,7 +205,7 @@ function Navbar({ active }) {
   return (
     <header className="sticky top-0 z-50 bg-[#04060B]/85 text-white backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-        <button onClick={() => go("top")} aria-label="Ke atas" className="flex items-center gap-3"><Mark /><span className="text-sm tracking-widest">UTC</span></button>
+        <button onClick={() => go("top")} aria-label="Ke atas" className="flex items-center gap-3"><Logo size={34} /><span className="text-sm tracking-widest">UTC</span></button>
         <nav className="hidden items-center gap-7 lg:flex">
           {NAV.map(([id, l]) => (
             <button key={id} onClick={() => nav(id)} className={`relative py-1 text-xs uppercase tracking-widest transition-colors ${active === id ? "text-[#38BDF8]" : "text-white/70 hover:text-white"}`}>
@@ -256,6 +255,10 @@ function MemberCard() {
       <div className="relative">
         <div aria-hidden className="absolute inset-0 translate-y-3 -rotate-6 rounded-2xl border border-white/20 bg-[#0A192F]/60" />
         <div aria-hidden className="absolute inset-0 -translate-y-1 rotate-[5deg] rounded-2xl border border-[#38BDF8]/40 bg-[#38BDF8]/10" />
+        {[["React", "-top-5 right-4", 5], ["Flutter", "top-1/2 -left-8", 6.5], ["UI/UX", "-bottom-5 left-12", 7.5]].map(([t, pos, d]) => (
+          <motion.span key={t} aria-hidden animate={{ y: [0, -6, 0] }} transition={{ duration: d, repeat: Infinity, ease: "easeInOut" }}
+            className={`absolute z-10 hidden rounded-full border border-[#38BDF8]/60 bg-[#04060B]/85 px-3 py-1 text-xs text-[#38BDF8] backdrop-blur sm:block ${pos}`}>{t}</motion.span>
+        ))}
         <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} style={{ perspective: 1100 }} className="relative">
           <motion.div role="button" tabIndex={0} aria-label="Kartu anggota UTC. Tekan untuk membalik kartu." aria-pressed={flip}
             onPointerMove={move} onPointerLeave={leave} onClick={toggle}
@@ -266,10 +269,10 @@ function MemberCard() {
               {/* depan */}
               <div className={`${faceCls} bg-[#0A192F]`} style={hide}>
                 <div aria-hidden className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(115deg, transparent 0 14px, rgba(56,189,248,.08) 14px 15px)" }} />
-                <Asterisk size={150} className="absolute -bottom-10 -right-8 text-[#38BDF8]/25" />
+                <img src={logo} alt="" aria-hidden className="pointer-events-none absolute -bottom-20 -right-16 h-44 w-44 rounded-full opacity-[0.12]" />
                 <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-white"><Mark /><span className="text-[10px] tracking-widest sm:text-xs">UKM UTC UPITRA</span></div>
+                    <div className="flex items-center gap-2 text-white"><Logo size={26} /><span className="text-[10px] tracking-widest sm:text-xs">UKM UTC UPITRA</span></div>
                     <span className={`${disp} text-lg text-[#38BDF8] sm:text-2xl`}>26</span>
                   </div>
                   <motion.div key={k} initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }} className="flex items-center gap-3 sm:gap-5">
@@ -316,6 +319,19 @@ function MemberCard() {
   );
 }
 
+const RING_TEXT = "UPITRA TECH CLUB \u2022 KOMUNITAS TEKNOLOGI \u2022 ";
+function RingBadge() {
+  return (
+    <div className="relative h-28 w-28 shrink-0 sm:h-32 sm:w-32">
+      <svg viewBox="0 0 120 120" className="utc-spin absolute inset-0 h-full w-full" style={{ "--d": "26s" }} aria-hidden>
+        <defs><path id="utc-ring" d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0" /></defs>
+        <text fill="#fff" fontSize="8.5" style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "2.9px" }}><textPath href="#utc-ring">{RING_TEXT}</textPath></text>
+      </svg>
+      <img src={logo} alt="Logo UKM UTC UPITRA" className="absolute inset-[21%] h-[58%] w-[58%] rounded-full" />
+    </div>
+  );
+}
+
 function Hero() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
@@ -329,6 +345,7 @@ function Hero() {
   };
   return (
     <section id="top" ref={ref} onMouseMove={move} className="relative overflow-hidden bg-[#04060B] px-5 pb-20 pt-12 text-white sm:pb-24 sm:pt-20">
+      <style>{`@keyframes utc-spin{to{transform:rotate(360deg)}}.utc-spin{animation:utc-spin var(--d) linear infinite}@media(prefers-reduced-motion:reduce){.utc-spin{animation:none}}`}</style>
       <motion.div aria-hidden style={{ x: bx, y: by }} className="pointer-events-none absolute -left-32 top-24">
         <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} className="h-72 w-[30rem] rounded-full bg-[#0A3A7A] opacity-80 blur-[100px]" />
       </motion.div>
@@ -338,7 +355,15 @@ function Hero() {
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
         <div>
           <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1, ease: EASE }} className="origin-left border-t border-white/50" />
-          <h1 className={`${disp} mt-8 text-[1.8rem] leading-[1.12] sm:text-5xl lg:text-[3.2rem]`}>
+          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-4">
+            <RingBadge />
+            <button onClick={() => go("join")} className="group inline-flex items-center gap-3 rounded-full border border-white/40 py-2 pl-4 pr-3 text-sm transition-colors hover:border-[#38BDF8]">
+              <span className="relative flex h-2.5 w-2.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#38BDF8] opacity-75 motion-reduce:animate-none" /><span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#38BDF8]" /></span>
+              Oprec dibuka 10 November
+              <ArrowUpRight size={15} className="text-white/60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </button>
+          </div>
+          <h1 className={`${disp} mt-6 text-[1.8rem] leading-[1.12] sm:text-5xl lg:text-[3.2rem]`}>
             {["Jadi Bagian", "\u2014 dari UTC"].map((w, i) => (
               <span key={w} className="block overflow-hidden pb-1">
                 <motion.span className="block" initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ duration: 0.9, delay: 0.2 + i * 0.15, ease: EASE }}>{w}</motion.span>
@@ -352,7 +377,7 @@ function Hero() {
               <button onClick={() => go("join")} className={pillSolid}>Bergabung Sekarang</button>
               <button onClick={() => go("projects")} className={`${pillBase} border-white/70 hover:bg-white hover:text-[#04060B]`}>Lihat Project</button>
             </div>
-            <dl className="mt-12 grid max-w-md grid-cols-3 border-t border-white/40 pt-5">
+            <dl className="mt-10 grid grid-cols-3 gap-3 sm:max-w-md">
               {STATS.map(([v, l]) => <Stat key={l} v={v} l={l} run={inView} />)}
             </dl>
           </Reveal>
@@ -367,7 +392,12 @@ function Hero() {
 
 function Stat({ v, l, run }) {
   const n = useCountUp(v, run);
-  return <div><dd className={`${disp} text-3xl sm:text-4xl`}>{n}+</dd><dt className="mt-1 text-sm text-white/60">{l}</dt></div>;
+  return (
+    <div className="rounded-2xl border border-white/20 bg-white/5 px-3 py-3 sm:px-4 sm:py-4">
+      <dd className={`${disp} text-[1.15rem] sm:text-3xl`}>{n}+</dd>
+      <dt className="mt-1 text-xs text-white/60 sm:text-sm">{l}</dt>
+    </div>
+  );
 }
 
 function Marquee() {
@@ -661,7 +691,7 @@ function Footer() {
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[2fr_1fr_2fr]">
           <div>
-            <div className="flex items-center gap-3"><Mark /><span className={`${disp} min-w-0 text-lg sm:text-xl`}>UKM UTC UPITRA</span></div>
+            <div className="flex items-center gap-3"><Logo size={44} /><span className={`${disp} min-w-0 text-lg sm:text-xl`}>UKM UTC UPITRA</span></div>
             <p className="mt-5 flex gap-2 text-white/70"><MapPin size={18} className="mt-1 shrink-0" />Sekretariat UKM UTC, Universitas Pignatelli Triputra, Surakarta</p>
             <p className="mt-2 flex gap-2 text-white/70"><Mail size={18} className="mt-1" />utc@example.com</p>
             <div className="mt-6 flex gap-3">
